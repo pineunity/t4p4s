@@ -381,9 +381,13 @@ if [ "$INSTALL_STAGE1_PACKAGES" == "yes" ]; then
 fi
 
 if [ "$INSTALL_STAGE2_DPDK" == "yes" ]; then
-    [ ! -d "dpdk-${DPDK_VSN}" ] && wget -q -o /dev/null http://fast.dpdk.org/rel/dpdk-$DPDK_FILEVSN.tar.xz >$(logfile "get-dpdk") 2>&1 && tar xJf dpdk-$DPDK_FILEVSN.tar.xz && rm dpdk-$DPDK_FILEVSN.tar.xz &
+    echo "Downloading dpdk package"
+    wget -q -o /dev/null http://fast.dpdk.org/rel/dpdk-$DPDK_FILEVSN.tar.xz >$(logfile "get-dpdk") 2>&1
+    tar xJf dpdk-$DPDK_FILEVSN.tar.xz && rm dpdk-$DPDK_FILEVSN.tar.xz &
+    #[ ! -d "dpdk-${DPDK_VSN}" ] && wget -q -o /dev/null http://fast.dpdk.org/rel/dpdk-$DPDK_FILEVSN.tar.xz >$(logfile "get-dpdk") 2>&1 && tar xJf dpdk-$DPDK_FILEVSN.tar.xz && rm dpdk-$DPDK_FILEVSN.tar.xz &
     WAITPROC_DPDK="$!"
     [ "$PARALLEL_INSTALL" != "yes" ] && wait "$WAITPROC_DPDK" >/dev/null 2>&1
+    echo "dpdk download is finished"
 fi
 
 if [ "$INSTALL_STAGE3_PROTOBUF" == "yes" ]; then
